@@ -128,14 +128,14 @@ module Authentication =
 
     [<Scenario>]
     let ``generateSignatureWithHMACSHA1 function returns the signature string with HMAC-SHA1 algorithm.`` () =
-        Given (["fuga"], "hoge")
+        Given (SecretKeyList ["fuga"], "hoge")
         ||> When generateSignatureWithHMACSHA1 (urlEncode Encoding.UTF8)
         |> It should equal "jMn6Vt7g5k4F4S666n%2FLeFwmJWI%3D"
         |> Verify
 
     [<Scenario>]
     let ``generateSignatureWithPLAINTEXT function returns the signature string without any algorithms.`` () =
-        Given (["fuga"], "hoge")
+        Given (SecretKeyList ["fuga"], "hoge")
         ||> When generateSignatureWithPLAINTEXT (fun s -> s)
         |> It should equal "hoge"
         |> Verify
@@ -143,7 +143,7 @@ module Authentication =
     [<Scenario>]
     [<FailsWithType (typeof<System.NotImplementedException>)>]
     let ``generateSignatureWithRSASHA1 function raises the NotImplementedException.`` () =
-        Given (["fuga"], "hoge")
+        Given (SecretKeyList ["fuga"], "hoge")
         ||> When generateSignatureWithRSASHA1 (fun s -> s)
         |> Verify
 
@@ -163,7 +163,7 @@ module Authentication =
 
     [<Scenario>]
     let ``makeStringPairForGenerateHeader function returns the paired string list from the ForRequestToken value.`` () =
-        Given ForRequestToken { consumerKey="XXXX"; consumerSecret="hoge" }
+        Given ForRequestToken { consumerKey="XXXX"; consumerSecret = SecretKey "hoge"; hash = Some HMACSHA1 }
         |> When makeStringPairForGenerateHeader
         |> (fun ls ->
             match ls with
@@ -177,8 +177,8 @@ module Authentication =
 
     [<Scenario>]
     let ``makeStringPairForGenerateHeader function returns the paired string list from the ForAccessToken value.`` () =
-        Given ForAccessToken ({ consumerKey="XXXX"; consumerSecret="hoge" },
-                            { requestToken="YYYY"; requestSecret="fuga"},
+        Given ForAccessToken ({ consumerKey="XXXX"; consumerSecret= SecretKey "hoge"; hash = Some HMACSHA1 },
+                            { requestToken="YYYY"; requestSecret= SecretKey "fuga" },
                             "123456")
         |> When makeStringPairForGenerateHeader
         |> (fun ls ->
@@ -195,8 +195,8 @@ module Authentication =
 
     [<Scenario>]
     let ``makeStringPairForGenerateHeader function returns the paired string list from the ForWebService value.`` () =
-        Given ForWebService ({ consumerKey="XXXX"; consumerSecret="hoge" },
-                            { accessToken="ZZZZ"; accessSecret="bar"},
+        Given ForWebService ({ consumerKey="XXXX"; consumerSecret=SecretKey "hoge"; hash = None },
+                            { accessToken="ZZZZ"; accessSecret=SecretKey "bar"},
                             [KeyValue ("hoge", "fuga")])
         |> When makeStringPairForGenerateHeader
         |> (fun ls ->
@@ -213,7 +213,7 @@ module Authentication =
     [<Scenario>]
     let ``generateAuthorizationHeaderForRequestToken function returns the Authorization parameter string.`` () =
         Given ((require Encoding.ASCII "http://hoge.com" POST),
-                { consumerKey="test_consumer_key"; consumerSecret="fuga" })
+                { consumerKey="test_consumer_key"; consumerSecret= SecretKey "fuga" ; hash = None })
         ||> When generateAuthorizationHeaderForRequestToken
         |> It should be (fun auth ->
             (System.Text.RegularExpressions.Regex.IsMatch
@@ -227,8 +227,8 @@ module Authentication =
 
     [<Scenario>]
     let ``generateAuthorizationHeaderForAccessToken function returns the Authorization parameter string.`` () =
-        Given ({ consumerKey="test_consumer_key"; consumerSecret="fuga" },
-                { requestToken="test_request_token"; requestSecret="bar"},
+        Given ({ consumerKey="test_consumer_key"; consumerSecret=SecretKey "fuga"; hash = None },
+                { requestToken="test_request_token"; requestSecret=SecretKey "bar"},
                 "123456")
         |||> When generateAuthorizationHeaderForAccessToken (require Encoding.ASCII "http://hoge.com" POST)
         |> It should be (fun auth ->
@@ -245,8 +245,8 @@ module Authentication =
 
     [<Scenario>]
     let ``generateAuthorizationHeaderForWebService function returns the Authorization parameter string.`` () =
-        Given ({ consumerKey="test_consumer_key"; consumerSecret="fuga" },
-                { accessToken="test_access_token"; accessSecret="blur"},
+        Given ({ consumerKey="test_consumer_key"; consumerSecret=SecretKey "fuga"; hash = None },
+                { accessToken="test_access_token"; accessSecret=SecretKey "blur"},
                 [KeyValue ("spam", "eggs")])
         |||> When generateAuthorizationHeaderForWebService (require Encoding.ASCII "http://hoge.com" POST)
         |> It should be (fun auth ->

@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.22823.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "OAuth", "OAuth\OAuth.fsproj", "{25ACF5D7-17E9-4AB9-ACB0-97A33CFCCF39}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "OAuth.Scenario", "OAuth.Scenario\OAuth.Scenario.fsproj", "{F5595EDC-1FE8-45F1-B84B-1DC2028409E2}"

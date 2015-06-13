@@ -49,3 +49,7 @@ module API =
     let useWebService requirement consumerInfo accessInfo parameter =
         let header = generateAuthorizationHeaderForWebService requirement consumerInfo accessInfo parameter
         asyncAPIBase requirement header parameter
+
+    [<CompiledName("SignUrl")>]
+    let signUrl requirement consumerInfo accessInfo parameter =
+        generateAuthorizationUrlParameterForWebService requirement consumerInfo accessInfo parameter
