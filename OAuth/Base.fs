@@ -30,6 +30,16 @@ module Base =
                             key + "=\"" + value + "\"")
             |> List.fold (concatStringsWithToken ", ") ""
 
+    [<CompiledName("UrlParameter")>]
+    let urlParameter keyValues =
+        match keyValues with
+        | [] -> ""
+        | _ ->
+            keyValues
+            |> List.map (fun (KeyValue (key, value)) ->
+                            key + "=" + value + "")
+            |> List.fold (concatStringsWithToken "&") ""
+
     [<CompiledName("Parameterize")>]
     let parameterize encoder keyValue =
         let (KeyValue (key, value)) = keyValue

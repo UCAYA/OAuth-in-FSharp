@@ -43,4 +43,7 @@ module API = begin
     /// <remark>The <paramref name="data" /> parameter works only the ASCII characters.</remark>
     [<CompiledName("UseWebService")>]
     val useWebService : HttpRequirement -> ConsumerInfo -> AccessInfo -> ParameterKeyValue list -> string
+
+    [<CompiledName("SignUrl")>]
+    val signUrl : HttpRequirement -> ConsumerInfo -> AccessInfo -> ParameterKeyValue list -> string
 end

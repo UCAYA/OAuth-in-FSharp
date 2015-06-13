@@ -23,7 +23,7 @@ module Authentication = begin
     /// <param name="baseString">The base string.</param>
     /// <returns>The signature which is encoded with Base64 digits and sanitized.</returns>
     [<CompiledName("GenerateSignature")>]
-    val generateSignature : (string -> string) -> HashAlgorithm -> string list -> string -> string
+    val generateSignature : (string -> string) -> HashAlgorithm -> Secret -> string -> string
 
     /// <summary>Returns the signature with HMAC-SHA1 algorithm.</summary>
     /// <param name="encoder">The encoding function.</param>
@@ -31,7 +31,7 @@ module Authentication = begin
     /// <param name="baseString">The base string.</param>
     /// <returns>The signature which is encoded with Base64 digits and sanitized.</returns>
     [<CompiledName("GenerateSignatureWithHMACSHA1")>]
-    val inline generateSignatureWithHMACSHA1 : (string -> string) -> string list -> string -> string
+    val inline generateSignatureWithHMACSHA1 : (string -> string) -> Secret -> string -> string
 
     /// <summary>Returns the signature without any criptographies.</summary>
     /// <param name="encoder">The encoding function.</param>
@@ -39,7 +39,7 @@ module Authentication = begin
     /// <param name="baseString">The base string.</param>
     /// <returns>The signature which is encoded with Base64 digits and sanitized.</returns>
     [<CompiledName("GenerateSignatureWithPLAINTEXT")>]
-    val inline generateSignatureWithPLAINTEXT : (string -> string) -> string list -> string -> string
+    val inline generateSignatureWithPLAINTEXT : (string -> string) -> Secret -> string -> string
 
     /// <summary>Returns the signature with RSA-SHA1 algorithm.</summary>
     /// <param name="encoder">The encoding function.</param>
@@ -49,7 +49,7 @@ module Authentication = begin
     /// <remark>This function is not implemented and throws the NotImplementedException
     /// when you use this.</remark>
     [<CompiledName("GenerateSignatureWithRSASHA1")>]
-    val inline generateSignatureWithRSASHA1 : (string -> string) -> string list -> string -> string
+    val inline generateSignatureWithRSASHA1 : (string -> string) -> Secret -> string -> string
 
     /// <summary>Returns the base string.</summary>
     /// <param name="requirement">The HTTP requirement parameter.</param>
@@ -95,4 +95,13 @@ module Authentication = begin
     /// <returns>The Authorization parameter in the HTTP header for using Web APIs.</returns>
     [<CompiledName("GenerateAuthorizationHeaderForWebService")>]
     val generateAuthorizationHeaderForWebService : HttpRequirement -> ConsumerInfo -> AccessInfo -> ParameterKeyValue list -> string
+
+    /// <summary>Returns the Authorization parameter in the url for using Web APIs.</summary>
+    /// <param name="requirement">The HTTP requirement parameter.</param>
+    /// <param name="consumerInfo">The ConsumerInfo record.</param>
+    /// <param name="accessInfo">The AccessInfo record.</param>
+    /// <param name="parameter">The Web API parameter.</param>
+    /// <returns>The Authorization parameter in the url header for using Web APIs.</returns>
+    [<CompiledName("GenerateAuthorizationUrlParameterForWebService")>]
+    val generateAuthorizationUrlParameterForWebService : HttpRequirement -> ConsumerInfo -> AccessInfo -> ParameterKeyValue list -> string
 end

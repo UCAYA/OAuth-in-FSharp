@@ -1,6 +1,6 @@
 namespace OAuth
 
-module Utilities =
+module Utilities =    
 
     [<CompiledName("ConcatStringsWithToken")>]
     let inline concatStringsWithToken token s1 s2 =

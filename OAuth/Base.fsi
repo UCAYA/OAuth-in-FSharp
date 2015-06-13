@@ -36,6 +36,12 @@ module Base = begin
     [<CompiledName("HeaderParameter")>]
     val headerParameter : ParameterKeyValue list -> string
 
+     /// <summary>Returns a string as a url parameter.</summary>
+    /// <param name="keyValues">The ParameterKeyValue list.</param>
+    /// <returns>The url header parameter.</returns>
+    [<CompiledName("UrlParameter")>]
+    val urlParameter : ParameterKeyValue list -> string
+
     /// <summary>Returns a string combined with an equal sign.</summary>
     /// <param name="encoder">The encoding function.</param>
     /// <param name="keyValue">The ParameterKeyValue.</param>
