@@ -6,7 +6,7 @@ type ParameterKeyValue = KeyValue of string * string
 
 type HashAlgorithm = HMACSHA1 | PLAINTEXT | RSASHA1
 
-type HttpMethod = GET | POST
+type HttpMethod = string
 
 type Secret = 
     SecretKey of string

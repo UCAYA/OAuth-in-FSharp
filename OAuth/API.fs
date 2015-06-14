@@ -16,7 +16,7 @@ module API =
             let (Requirement (encoding, targetUrl, httpMethod)) = requirement
             let wc = new System.Net.WebClient ()
             let url = System.Uri (targetUrl)
-            let meth = getHttpMethodString httpMethod
+            let meth = httpMethod
             let! result =
                 wc.Headers.Add ("Authorization", header)
                 let rec setPostParameter keyValue (param : NameValueCollection) =
@@ -29,9 +29,9 @@ module API =
                     | _ -> param
                 let param = setPostParameter parameter (NameValueCollection())
                 wc.QueryString <- param
-                match httpMethod with
-                | GET -> wc.AsyncDownloadString url
-                | POST -> wc.AsyncUploadString(url,meth,"")
+                if httpMethod.Equals("GET") 
+                    then wc.AsyncDownloadString url
+                    else wc.AsyncUploadString url meth ""
             return result
         } |> Async.RunSynchronously
 
