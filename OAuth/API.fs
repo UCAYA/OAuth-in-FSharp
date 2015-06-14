@@ -31,7 +31,7 @@ module API =
                 wc.QueryString <- param
                 match httpMethod with
                 | GET -> wc.AsyncDownloadString url
-                | POST -> wc.AsyncUploadString url meth ""
+                | POST -> wc.AsyncUploadString(url,meth,"")
             return result
         } |> Async.RunSynchronously
 
