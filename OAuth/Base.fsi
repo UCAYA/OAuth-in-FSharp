@@ -3,7 +3,7 @@
 module Base = begin
     open OAuth.Utilities
     open OAuth.Types
-
+   
     /// <summary>Returns a HTTP requirement parameter.</summary>
     /// <param name="encoding">The encoding.</param>
     /// <param name="targetUrl">The URL string.</param>
@@ -11,12 +11,6 @@ module Base = begin
     /// <returns>The HTTP requirement parameter.</returns>
     [<CompiledName("Require")>]
     val require : System.Text.Encoding -> string -> HttpMethod -> HttpRequirement
-
-    /// <summary>Returns the string that represents the HTTP method.</summary>
-    /// <param name="httpMethod">The Http Method.</param>
-    /// <returns>The string of the HTTP method.</returns>
-    [<CompiledName("GetHttpMethodString")>]
-    val getHttpMethodString : HttpMethod -> string
     
     /// <summary>Returns a ParameterKeyValue list from a string tuple list.</summary>
     /// <param name="tupleList">The list of 2 strings tuple.</param>

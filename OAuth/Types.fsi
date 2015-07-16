@@ -2,6 +2,8 @@
 
 open System.Security.Cryptography.X509Certificates
 
+type HttpMethod = string
+
 /// <summary>A key-value parameter.</summary>
 type ParameterKeyValue = | KeyValue of string * string
 
@@ -10,11 +12,6 @@ type HashAlgorithm =
     | HMACSHA1
     | PLAINTEXT
     | RSASHA1
-
-/// <summary>An HTTP method, GET or POST.</summary>
-type HttpMethod =
-    | GET
-    | POST
 
 type Secret = 
     SecretKey of string

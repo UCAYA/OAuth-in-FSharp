@@ -5,14 +5,9 @@ module Base =
     open System.Text
     open OAuth.Utilities
     open OAuth.Types
-
+    
     [<CompiledName("Require")>]
     let require encoding targetUrl httpMethod = Requirement (encoding, targetUrl, httpMethod)
-
-    [<CompiledName("GetHttpMethodString")>]
-    let getHttpMethodString = function
-        | GET -> "GET"
-        | POST -> "POST"
 
     [<CompiledName("ToKeyValue")>]
     let toKeyValue tupleList = List.map KeyValue tupleList

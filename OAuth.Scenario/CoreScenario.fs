@@ -10,17 +10,17 @@ module Base =
 
     [<Scenario>]
     let ``require function returns the HTTP requirement parameter.`` () =
-        Given (Encoding.ASCII, "http://hoge.com", GET)
+        Given (Encoding.ASCII, "http://hoge.com", "GET")
         |||> When require
-        |> It should equal (Requirement (Encoding.ASCII, "http://hoge.com", GET))
+        |> It should equal (Requirement (Encoding.ASCII, "http://hoge.com", "GET"))
         |> Verify
 
-    [<Scenario>]
-    let ``getHttpMethodString function returns the string that represents the HTTP method.`` () =
-        Given [GET; POST]
-        |> When List.map getHttpMethodString
-        |> It should equal ["GET"; "POST"]
-        |> Verify
+//    [<Scenario>]
+//    let ``getHttpMethodString function returns the string that represents the HTTP method.`` () =
+//        Given [GET; POST]
+//        |> When List.map getHttpMethodString
+//        |> It should equal ["GET"; "POST"]
+//        |> Verify
 
     [<Scenario>]
     let ``toKeyValue function returns the ParameterKeyValue list from the paired string list.`` () =
@@ -154,7 +154,7 @@ module Authentication =
                 KeyValue ("oauth_timestamp", "1234567890");
                 KeyValue ("oauth_nonce", "1111");
                 KeyValue ("oauth_signature", "YYYY")]
-        |> When assembleBaseString (require Encoding.ASCII "http://hoge.com" POST)
+        |> When assembleBaseString (require Encoding.ASCII "http://hoge.com" "POST")
         |> It should equal ("POST&http%3A%2F%2Fhoge.com&"
                             + "oauth_consumer_key%3DXXXX%26oauth_nonce%3D1111%26"
                             + "oauth_signature%3DYYYY%26oauth_signature_method%3DHMACSHA1%26"
@@ -212,7 +212,7 @@ module Authentication =
 
     [<Scenario>]
     let ``generateAuthorizationHeaderForRequestToken function returns the Authorization parameter string.`` () =
-        Given ((require Encoding.ASCII "http://hoge.com" POST),
+        Given ((require Encoding.ASCII "http://hoge.com" "POST"),
                 { consumerKey="test_consumer_key"; consumerSecret= SecretKey "fuga" ; hash = None })
         ||> When generateAuthorizationHeaderForRequestToken
         |> It should be (fun auth ->
@@ -230,7 +230,7 @@ module Authentication =
         Given ({ consumerKey="test_consumer_key"; consumerSecret=SecretKey "fuga"; hash = None },
                 { requestToken="test_request_token"; requestSecret=SecretKey "bar"},
                 "123456")
-        |||> When generateAuthorizationHeaderForAccessToken (require Encoding.ASCII "http://hoge.com" POST)
+        |||> When generateAuthorizationHeaderForAccessToken (require Encoding.ASCII "http://hoge.com" "POST")
         |> It should be (fun auth ->
             (System.Text.RegularExpressions.Regex.IsMatch
                 (auth, "OAuth " +
@@ -248,7 +248,7 @@ module Authentication =
         Given ({ consumerKey="test_consumer_key"; consumerSecret=SecretKey "fuga"; hash = None },
                 { accessToken="test_access_token"; accessSecret=SecretKey "blur"},
                 [KeyValue ("spam", "eggs")])
-        |||> When generateAuthorizationHeaderForWebService (require Encoding.ASCII "http://hoge.com" POST)
+        |||> When generateAuthorizationHeaderForWebService (require Encoding.ASCII "http://hoge.com" "POST")
         |> It should be (fun auth ->
             (System.Text.RegularExpressions.Regex.IsMatch
                 (auth, "OAuth " +

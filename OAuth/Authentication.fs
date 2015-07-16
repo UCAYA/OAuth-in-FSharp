@@ -71,10 +71,22 @@ module Authentication =
     let assembleBaseString requirement keyValues =
         let (Requirement (encoding, targetUrl, httpMethod)) = requirement
         let encoder = urlEncode encoding
-        let sanitizedUrl = targetUrl |> encoder
+        let uri = new Uri(targetUrl)
+        let normalizedUrl = new Uri(uri.GetComponents(UriComponents.SchemeAndServer ||| UriComponents.Path, UriFormat.SafeUnescaped))
+        let query = uri.Query.Trim('?')
+        let urlQueryItems = match query with
+                            | "" ->  []
+                            | _ -> query.Split('&')
+                                     |> Seq.map(fun x -> 
+                                            let parts = x.Split([| '=' |], 2)
+                                            KeyValue (Uri.UnescapeDataString(parts.[0]), Uri.UnescapeDataString(parts.[1]))
+                                        )
+                                     |> Seq.toList
+
+        let sanitizedUrl = (normalizedUrl.ToString()) |> encoder
         let sorKeyValues = List.sortBy (fun (KeyValue (key, value)) -> key)
-        let meth = getHttpMethodString httpMethod
-        let arrangedParams = keyValues
+        let meth = httpMethod
+        let arrangedParams = urlQueryItems @ keyValues
                             |> sorKeyValues
                             |> toParameter encoder
                             |> encoder
